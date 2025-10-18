@@ -398,6 +398,17 @@ python -c "from torchvision import datasets; \
            datasets.CIFAR10(root='./data/raw', train=True, download=True)"
 ```
 
+**Issue**: Protobuf/TensorBoard compatibility error
+```
+TypeError: Descriptors cannot be created directly...
+```
+Solution: This is already fixed in `requirements.txt`. Make sure to reinstall with:
+```bash
+pip install -r requirements.txt
+# Or if you need to downgrade manually:
+pip install "protobuf<=3.20.3"
+```
+
 ### Debug Mode
 
 Enable detailed logging:

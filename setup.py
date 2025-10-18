@@ -16,6 +16,7 @@ setup(
         "matplotlib>=3.7.0",
         "seaborn>=0.12.0",
         "tensorboard>=2.12.0",
+        "protobuf<=3.20.3",
         "PyYAML>=6.0",
         "tqdm>=4.65.0",
         "Pillow>=9.5.0",
