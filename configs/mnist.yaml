@@ -1,0 +1,57 @@
+model:
+  encoder_arch: "custom"
+  embedding_dim: 128
+  latent_dim: 256
+  film_positions: [0, 1, 2, 3]
+
+training:
+  num_epochs: 100
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "step"
+  scheduler_params:
+    step_size: 30
+    gamma: 0.1
+  reconstruction_weight: 1.0
+  early_stopping_patience: 20
+
+data:
+  dataset: "mnist"
+  data_root: "./data"
+  num_workers: 4
+  pin_memory: true
+  num_known_classes: 6
+  known_class_indices: [0, 1, 2, 3, 4, 5]  # First 6 digits
+  use_background: true
+  background_ratio: 0.3
+
+augmentation:
+  train:
+    random_crop: true
+    crop_padding: 2
+    random_horizontal_flip: false
+    color_jitter: false
+    normalize: true
+    normalization_mean: [0.5]
+    normalization_std: [0.5]
+  test:
+    normalize: true
+    normalization_mean: [0.5]
+    normalization_std: [0.5]
+
+experiment:
+  name: "c2ae_mnist"
+  seed: 42
+  log_interval: 10
+  checkpoint_interval: 10
+  save_best_only: true
+  use_tensorboard: true
+  tensorboard_dir: "./results/tensorboard"
+  save_dir: "./results"
+
+hardware:
+  device: "cuda"
+  cuda_deterministic: false
+  num_gpus: 1

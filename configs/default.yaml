@@ -1,0 +1,71 @@
+model:
+  encoder_arch: "resnet18"
+  embedding_dim: 128
+  latent_dim: 512
+  film_positions: [0, 1, 2, 3]
+
+training:
+  num_epochs: 100
+  batch_size: 128
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "step"
+  scheduler_params:
+    step_size: 30
+    gamma: 0.1
+  reconstruction_weight: 1.0
+  early_stopping_patience: 20
+  early_stopping_metric: "val_loss"
+
+data:
+  dataset: "cifar10"
+  data_root: "./data"
+  num_workers: 4
+  pin_memory: true
+  num_known_classes: 6
+  known_class_indices: [0, 1, 2, 3, 4, 5]
+  use_background: true
+  background_ratio: 0.3
+  background_augmentation: 0.8
+
+augmentation:
+  train:
+    random_crop: true
+    crop_padding: 4
+    random_horizontal_flip: true
+    flip_probability: 0.5
+    color_jitter: true
+    jitter_params:
+      brightness: 0.2
+      contrast: 0.2
+      saturation: 0.2
+      hue: 0.1
+    normalize: true
+    normalization_mean: [0.5, 0.5, 0.5]
+    normalization_std: [0.5, 0.5, 0.5]
+  test:
+    normalize: true
+    normalization_mean: [0.5, 0.5, 0.5]
+    normalization_std: [0.5, 0.5, 0.5]
+
+evaluation:
+  metrics: ["auroc", "aupr", "ccr_at_fpr", "f1_score"]
+  fpr_thresholds: [0.01, 0.05, 0.1]
+  threshold_selection: "optimal_f1"
+  score_aggregation: "min"
+
+experiment:
+  name: "c2ae_default"
+  seed: 42
+  log_interval: 10
+  checkpoint_interval: 10
+  save_best_only: true
+  use_tensorboard: true
+  tensorboard_dir: "./results/tensorboard"
+  save_dir: "./results"
+
+hardware:
+  device: "cuda"
+  cuda_deterministic: false
+  num_gpus: 1
