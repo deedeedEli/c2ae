@@ -85,3 +85,4 @@ htmlcov/
 
 # System files
 Thumbs.db
+*.pdf
